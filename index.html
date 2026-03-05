@@ -1,0 +1,44 @@
+<html>
+
+<body style="background:#000; display:flex; justify-content:center; align-items:center; height:100vh;">
+
+<div id="clock" style="width:300px; height:300px; border:6px solid #8B0000; border-radius:50%; position:relative;">
+
+<div id="h" style="width:8px; height:60px; background:#8B0000; position:absolute; bottom:50%; left:50%; transform-origin:bottom; margin-left:-4px;"></div>
+
+<div id="m" style="width:5px; height:90px; background:#8B0000; position:absolute; bottom:50%; left:50%; transform-origin:bottom; margin-left:-2.5px;"></div>
+
+<div id="s" style="width:2px; height:110px; background:#87CEEB; position:absolute; bottom:50%; left:50%; transform-origin:bottom; margin-left:-1px;"></div>
+
+<div style="width:12px; height:12px; background:#87CEEB; border-radius:50%; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);"></div>
+
+</div>
+
+<script>
+
+function tick(){
+
+const d=new Date();
+
+const s=d.getSeconds()*6;
+
+const m=d.getMinutes()*6 + d.getSeconds()*0.1;
+
+const h=d.getHours()*30 + d.getMinutes()*0.5;
+
+document.getElementById('s').style.transform='rotate('+s+'deg)';
+
+document.getElementById('m').style.transform='rotate('+m+'deg)';
+
+document.getElementById('h').style.transform='rotate('+h+'deg)';
+
+}
+
+setInterval(tick,1000); tick();
+
+</script>
+
+</body>
+
+</html>
+
