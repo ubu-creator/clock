@@ -1,44 +1,214 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<body style="background:#000; display:flex; justify-content:center; align-items:center; height:100vh;">
+<title>TowMes World Clock</title>
 
-<div id="clock" style="width:300px; height:300px; border:6px solid #8B0000; border-radius:50%; position:relative;">
+<style>
 
-<div id="h" style="width:8px; height:60px; background:#8B0000; position:absolute; bottom:50%; left:50%; transform-origin:bottom; margin-left:-4px;"></div>
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+color:white;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+height:100vh;
+overflow:hidden;
+}
 
-<div id="m" style="width:5px; height:90px; background:#8B0000; position:absolute; bottom:50%; left:50%; transform-origin:bottom; margin-left:-2.5px;"></div>
+.container{
+display:flex;
+flex-wrap:wrap;
+align-items:center;
+justify-content:center;
+gap:40px;
+}
 
-<div id="s" style="width:2px; height:110px; background:#87CEEB; position:absolute; bottom:50%; left:50%; transform-origin:bottom; margin-left:-1px;"></div>
+.clock{
+width:220px;
+height:220px;
+border:8px solid white;
+border-radius:50%;
+position:relative;
+background:rgba(0,0,0,0.4);
+box-shadow:0 0 20px rgba(0,0,0,0.5);
+}
 
-<div style="width:12px; height:12px; background:#87CEEB; border-radius:50%; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);"></div>
+.hand{
+position:absolute;
+bottom:50%;
+left:50%;
+transform-origin:bottom;
+transform:translateX(-50%);
+background:white;
+}
+
+.hour{
+width:6px;
+height:60px;
+}
+
+.minute{
+width:4px;
+height:80px;
+}
+
+.second{
+width:2px;
+height:95px;
+background:red;
+}
+
+.center{
+position:absolute;
+width:12px;
+height:12px;
+background:red;
+border-radius:50%;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+}
+
+.digital{
+font-size:40px;
+font-weight:bold;
+text-align:center;
+}
+
+.date{
+font-size:20px;
+opacity:0.8;
+margin-top:10px;
+}
+
+.world{
+margin-top:30px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+gap:15px;
+width:90%;
+max-width:600px;
+}
+
+.city{
+background:rgba(255,255,255,0.1);
+padding:10px;
+border-radius:10px;
+text-align:center;
+}
+
+.footer{
+position:fixed;
+bottom:8px;
+font-size:14px;
+opacity:0.7;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="clock">
+<div class="hand hour" id="hour"></div>
+<div class="hand minute" id="minute"></div>
+<div class="hand second" id="second"></div>
+<div class="center"></div>
+</div>
+
+<div>
+<div class="digital" id="digital"></div>
+<div class="date" id="date"></div>
+</div>
 
 </div>
 
+<div class="world">
+
+<div class="city">
+New York
+<div id="ny"></div>
+</div>
+
+<div class="city">
+London
+<div id="london"></div>
+</div>
+
+<div class="city">
+Casablanca
+<div id="casa"></div>
+</div>
+
+<div class="city">
+Mecca
+<div id="mecca"></div>
+</div>
+
+</div>
+
+<div class="footer">TowMes</div>
+
 <script>
 
-function tick(){
+function updateClock(){
 
-const d=new Date();
+let now = new Date();
 
-const s=d.getSeconds()*6;
+let sec = now.getSeconds();
+let min = now.getMinutes();
+let hr = now.getHours();
 
-const m=d.getMinutes()*6 + d.getSeconds()*0.1;
+let secDeg = sec * 6;
+let minDeg = min * 6 + sec * 0.1;
+let hrDeg = hr * 30 + min * 0.5;
 
-const h=d.getHours()*30 + d.getMinutes()*0.5;
+document.getElementById("second").style.transform="translateX(-50%) rotate("+secDeg+"deg)";
+document.getElementById("minute").style.transform="translateX(-50%) rotate("+minDeg+"deg)";
+document.getElementById("hour").style.transform="translateX(-50%) rotate("+hrDeg+"deg)";
 
-document.getElementById('s').style.transform='rotate('+s+'deg)';
+document.getElementById("digital").innerHTML=
+now.toLocaleTimeString();
 
-document.getElementById('m').style.transform='rotate('+m+'deg)';
-
-document.getElementById('h').style.transform='rotate('+h+'deg)';
+document.getElementById("date").innerHTML=
+now.toDateString();
 
 }
 
-setInterval(tick,1000); tick();
+setInterval(updateClock,1000);
+updateClock();
+
+
+function worldTime(city,zone){
+
+let time = new Date().toLocaleTimeString("en-US",
+{timeZone:zone});
+
+document.getElementById(city).innerHTML=time;
+
+}
+
+function updateWorld(){
+
+worldTime("ny","America/New_York");
+worldTime("london","Europe/London");
+worldTime("casa","Africa/Casablanca");
+worldTime("mecca","Asia/Riyadh");
+
+}
+
+setInterval(updateWorld,1000);
+updateWorld();
 
 </script>
 
 </body>
-
 </html>
-
